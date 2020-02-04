@@ -10,6 +10,7 @@
     import {Map, View} from 'ol';
     import TileLayer from 'ol/layer/Tile';
     import OSM from 'ol/source/OSM';
+    import {fromLonLat} from 'ol/proj';
 
     export default {
         name: 'map',
@@ -25,10 +26,10 @@
                     })
                 ],
                 view: new View({
-                    center: [51, 51],
-                    zoom: 4
+                    center: fromLonLat([49.133444, 55.780213]),
+                    zoom: 10,
                 }),
-                controls: []
+                controls: [],
             });
         }
     }
