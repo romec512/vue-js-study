@@ -27,7 +27,8 @@
                 view: new View({
                     center: [51, 51],
                     zoom: 4
-                })
+                }),
+                controls: []
             });
         }
     }
