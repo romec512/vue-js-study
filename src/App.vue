@@ -1,14 +1,17 @@
 <template>
   <div id="app">
+    <MapMenu></MapMenu>
     <Map></Map>
   </div>
 </template>
 
 <script>
 import Map from "./components/Map";
+import MapMenu from "./components/MapMenu";
 export default {
   name: 'app',
   components: {
+    MapMenu,
     Map
   }
 }
