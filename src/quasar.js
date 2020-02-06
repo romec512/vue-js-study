@@ -43,4 +43,4 @@ Vue.use(Quasar, {
   plugins: {
   },
   lang: lang
- })
+ });

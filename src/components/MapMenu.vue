@@ -1,12 +1,27 @@
 <template>
     <div id="map-menu">
-        Меню
+        <div>Поисковая строка</div>
+        <CollapsibleList
+        :list=test
+        >
+
+        </CollapsibleList>
     </div>
 </template>
 
 <script>
+    import CollapsibleList from "./CollapsibleList";
     export default {
-        name: "MapMenu"
+        name: "MapMenu",
+        components: {CollapsibleList},
+        data() {
+            return {
+                test: [
+                    {id: 1, name: 'test1'},
+                    {id: 2, name: 'test2'}
+                ]
+            }
+        }
     }
 </script>
 
