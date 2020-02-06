@@ -2,9 +2,7 @@
     <div id="collapsible-list">
         <transition name="slide">
             <div v-if="isVisible">
-                <div :key="value.id" v-for="value in $props.list">
-                    {{value.name}}
-                </div>
+                <slot></slot>
             </div>
         </transition>
         <div id="collapsible-control" @click="this.toggle">
@@ -23,15 +21,6 @@
         data() {
             return {
                 isVisible: true,
-            }
-        },
-        props: {
-            list: {
-                required: true,
-                type: Array
-            },
-            component: {
-                required: true
             }
         },
         methods: {
