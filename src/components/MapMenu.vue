@@ -13,29 +13,21 @@
                 </template>
             </q-input>
         </div>
-        <CollapsibleList
-        :list=test
-        >
-
+        <CollapsibleList>
+            <LayersList></LayersList>
         </CollapsibleList>
     </div>
 </template>
 
 <script>
     import CollapsibleList from "./CollapsibleList";
+    import LayersList from "./LayersList";
     export default {
         name: "MapMenu",
-        components: {CollapsibleList},
-        created() {
-            //ToDo: добавить запрос на получение всех слоев
-        },
+        components: {LayersList, CollapsibleList},
         data() {
             return {
-                test: [
-                    {id: 1, name: 'test1'},
-                    {id: 2, name: 'test2'}
-                ],
-                search: ''
+                search: '',
             }
         },
         methods: {
