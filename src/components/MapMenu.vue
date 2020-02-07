@@ -1,6 +1,17 @@
 <template>
     <div id="map-menu">
-        <div>Поисковая строка</div>
+        <div id="header">
+            <q-input
+                    v-model="search"
+                    borderless
+                    placeholder="Поиск ..."
+                    :input-style="{fontSize: '1.3em'}"
+            >
+                <template v-slot:append>
+                    <q-icon name="search" />
+                </template>
+            </q-input>
+        </div>
         <CollapsibleList
         :list=test
         >
@@ -19,7 +30,8 @@
                 test: [
                     {id: 1, name: 'test1'},
                     {id: 2, name: 'test2'}
-                ]
+                ],
+                search: ''
             }
         }
     }
@@ -34,5 +46,9 @@
         margin-top: 5px;
         margin-left: 5px;
         border-radius: 3px;
+    }
+    #header {
+        margin-left: 20px;
+        margin-right: 15px;
     }
 </style>
