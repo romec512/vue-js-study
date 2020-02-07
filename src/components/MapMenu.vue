@@ -6,9 +6,10 @@
                     borderless
                     placeholder="Поиск ..."
                     :input-style="{fontSize: '1.3em'}"
+                    @change="onChange"
             >
                 <template v-slot:append>
-                    <q-icon name="search" />
+                    <q-icon name="search" @click="onChange"/>
                 </template>
             </q-input>
         </div>
@@ -25,6 +26,9 @@
     export default {
         name: "MapMenu",
         components: {CollapsibleList},
+        created() {
+            //ToDo: добавить запрос на получение всех слоев
+        },
         data() {
             return {
                 test: [
@@ -32,6 +36,11 @@
                     {id: 2, name: 'test2'}
                 ],
                 search: ''
+            }
+        },
+        methods: {
+            onChange() {
+                //ToDo: Сделать запрос на фильтрацию слоев
             }
         }
     }
