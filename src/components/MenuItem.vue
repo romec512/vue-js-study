@@ -29,18 +29,19 @@
           return {
               icon: '',
               layerName: '',
-              selected: false
+              selected: false,
+              layer: null
           };
         },
         async created() {
             const axios = new AxiosWrapper();
             let response = null;
-            await axios.request('http://geo.tatar.ru/api/layers/' + this.$props.guid, 'get', {headers: {'X-App': '51d5e291a5f80482', 'Content-Type': 'application/json'}}).then(function (_response) {
+            await axios.getLayer(this.$props.guid).then(function (_response) {
                 response = _response;
             });
+            this.layer = response;
             this.icon = response.data.styleHash.default[0].iconUrl;
             this.layerName = response.data.name;
-            window.console.log(response);
         },
         methods: {
             changeValue() {
