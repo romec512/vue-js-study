@@ -46,6 +46,13 @@
         methods: {
             changeValue() {
                 //ToDo: сделать отображение и скрытие объектов на карте
+                // let response = null;
+                const axios = new AxiosWrapper();
+                var self = this;
+                axios.getLayerFeatures(this.$props.guid).then(function () {
+                    // response = _response;
+                    window.console.log(self.$root.find('#map'));
+                });
             }
         }
     }

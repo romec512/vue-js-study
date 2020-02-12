@@ -10,7 +10,15 @@ export default class AxiosWrapper {
         }
     }
 
+    getHeaders () {
+        return {headers: {'X-App': '51d5e291a5f80482', 'Content-Type': 'application/json'}};
+    }
+
     getLayer (guid) {
-        return this.request('/api/layers/' + guid, 'get', {headers: {'X-App': '51d5e291a5f80482', 'Content-Type': 'application/json'}});
+        return this.request('/api/layers/' + guid, 'get', this.getHeaders());
+    }
+
+    getLayerFeatures (guid) {
+        return this.request('/api/layers/' + guid + '/features', 'get', this.getHeaders());
     }
 }
