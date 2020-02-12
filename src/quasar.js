@@ -5,7 +5,7 @@ import lang from 'quasar/lang/ru.js'
 import '@quasar/extras/material-icons/material-icons.css'
 import '@quasar/extras/fontawesome-v5/fontawesome-v5.css'
 import {
-  Quasar, 
+  Quasar,
   QLayout,
   QHeader,
   QDrawer,
@@ -19,6 +19,7 @@ import {
   QItem,
   QItemSection,
   QItemLabel,
+  QInput,
 } from 'quasar'
 
 Vue.use(Quasar, {
@@ -37,10 +38,11 @@ Vue.use(Quasar, {
     QItem,
     QItemSection,
     QItemLabel,
+    QInput
   },
   directives: {
   },
   plugins: {
   },
   lang: lang
- })
+ });

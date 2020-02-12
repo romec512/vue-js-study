@@ -1,12 +1,40 @@
 <template>
     <div id="map-menu">
-        Меню
+        <div id="header">
+            <q-input
+                    v-model="search"
+                    borderless
+                    placeholder="Поиск ..."
+                    :input-style="{fontSize: '1.3em'}"
+                    @change="onChange"
+            >
+                <template v-slot:append>
+                    <q-icon name="search" @click="onChange"/>
+                </template>
+            </q-input>
+        </div>
+        <CollapsibleList>
+            <LayersList></LayersList>
+        </CollapsibleList>
     </div>
 </template>
 
 <script>
+    import CollapsibleList from "./CollapsibleList";
+    import LayersList from "./LayersList";
     export default {
-        name: "MapMenu"
+        name: "MapMenu",
+        components: {LayersList, CollapsibleList},
+        data() {
+            return {
+                search: '',
+            }
+        },
+        methods: {
+            onChange() {
+                //ToDo: Сделать запрос на фильтрацию слоев
+            }
+        }
     }
 </script>
 
@@ -19,5 +47,9 @@
         margin-top: 5px;
         margin-left: 5px;
         border-radius: 3px;
+    }
+    #header {
+        margin-left: 20px;
+        margin-right: 15px;
     }
 </style>
