@@ -16,6 +16,9 @@
 
 <script>
     import AxiosWrapper from "../data/AxiosWrapper";
+    import {Vector as VectorSource} from "ol/source";
+    import {Vector as VectorLayer} from "ol/layer";
+    import Point from "ol/geom/Point";
 
     export default {
         name: "MenuItem",
@@ -46,13 +49,16 @@
         methods: {
             changeValue() {
                 //ToDo: сделать отображение и скрытие объектов на карте
-                // let response = null;
                 const axios = new AxiosWrapper();
-                var self = this;
-                axios.getLayerFeatures(this.$props.guid).then(function () {
-                    // response = _response;
-                    window.console.log(self.$root.find('#map'));
+                let response = null;
+                axios.getLayerFeatures(this.$props.guid).then(function (_response) {
+                    response = _response;
                 });
+                let source = new VectorSource({});
+                let layer = new VectorLayer({source: source});
+                this.$store.getters.map.addLayer(layer);
+                let point = new Point({});
+
             }
         }
     }
