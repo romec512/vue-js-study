@@ -19,6 +19,10 @@
     import {Vector as VectorSource} from "ol/source";
     import {Vector as VectorLayer} from "ol/layer";
     import Point from "ol/geom/Point";
+    import Feature from "ol/Feature";
+    import {transform} from 'ol/proj';
+    import Style from "ol/style/Style";
+    import Icon from "ol/style/Icon";
 
     export default {
         name: "MenuItem",
@@ -48,17 +52,37 @@
         },
         methods: {
             changeValue() {
+                let self = this;
                 //ToDo: сделать отображение и скрытие объектов на карте
                 const axios = new AxiosWrapper();
                 let response = null;
                 axios.getLayerFeatures(this.$props.guid).then(function (_response) {
                     response = _response;
+                    let features = [];
+                    response.data.forEach(function (feature) {
+                        let newFeature = new Feature({
+                            geometry: new Point(transform(feature.geometry.coordinates, 'EPSG:4326', 'EPSG:3857')),
+                            name: feature.id,
+                            guid: feature.id
+                        });
+                        features.push(
+                            newFeature
+                        );
+                    });
+                    let source = new VectorSource({
+                        features: features
+                    });
+                    let layer = new VectorLayer({source: source});
+                    layer.setStyle(new Style({
+                        image: new Icon({
+                            // color: '#8959A8',
+                            crossOrigin: 'anonymous',
+                            src: self.icon,
+                            scale: 0.5
+                        })
+                    }));
+                    self.$store.getters.map.addLayer(layer);
                 });
-                let source = new VectorSource({});
-                let layer = new VectorLayer({source: source});
-                this.$store.getters.map.addLayer(layer);
-                let point = new Point({});
-
             }
         }
     }
