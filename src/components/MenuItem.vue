@@ -37,7 +37,9 @@
               icon: '',
               layerName: '',
               selected: false,
-              layer: null
+              layer: null,
+              mapLayer: null,
+              loaded: false
           };
         },
         async created() {
@@ -52,37 +54,52 @@
         },
         methods: {
             changeValue() {
-                let self = this;
                 //ToDo: сделать отображение и скрытие объектов на карте
-                const axios = new AxiosWrapper();
-                let response = null;
-                axios.getLayerFeatures(this.$props.guid).then(function (_response) {
-                    response = _response;
-                    let features = [];
-                    response.data.forEach(function (feature) {
-                        let newFeature = new Feature({
-                            geometry: new Point(transform(feature.geometry.coordinates, 'EPSG:4326', 'EPSG:3857')),
-                            name: feature.id,
-                            guid: feature.id
+                if (this.selected) {
+                    this.show();
+                } else {
+                    this.hide();
+                }
+            },
+            show() {
+                let self = this;
+                if (!this.loaded) {
+                    const axios = new AxiosWrapper();
+                    let response = null;
+                    axios.getLayerFeatures(this.$props.guid).then(function (_response) {
+                        response = _response;
+                        let features = [];
+                        response.data.forEach(function (feature) {
+                            let newFeature = new Feature({
+                                geometry: new Point(transform(feature.geometry.coordinates, 'EPSG:4326', 'EPSG:3857')),
+                                name: feature.id,
+                                guid: feature.id
+                            });
+                            features.push(
+                                newFeature
+                            );
                         });
-                        features.push(
-                            newFeature
-                        );
+                        let source = new VectorSource({
+                            features: features
+                        });
+                        let layer = new VectorLayer({source: source});
+                        layer.setStyle(new Style({
+                            image: new Icon({
+                                crossOrigin: 'anonymous',
+                                src: self.icon,
+                                scale: 0.5
+                            })
+                        }));
+                        self.$store.getters.map.addLayer(layer);
+                        self.mapLayer = layer;
                     });
-                    let source = new VectorSource({
-                        features: features
-                    });
-                    let layer = new VectorLayer({source: source});
-                    layer.setStyle(new Style({
-                        image: new Icon({
-                            // color: '#8959A8',
-                            crossOrigin: 'anonymous',
-                            src: self.icon,
-                            scale: 0.5
-                        })
-                    }));
-                    self.$store.getters.map.addLayer(layer);
-                });
+                    this.loaded = true;
+                } else {
+                    this.mapLayer.setVisible(true);
+                }
+            },
+            hide() {
+                this.mapLayer.setVisible(false);
             }
         }
     }
