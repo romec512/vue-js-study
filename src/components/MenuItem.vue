@@ -1,11 +1,28 @@
 <template>
-    <div id="menu-item">
-        <q-icon size="md"  :name="'img:' + icon"></q-icon>
+
+    <div>
+    <q-item>
+        <q-item-section avatar>
+            <q-icon size="md" :name="'img:' + icon" />
+        </q-item-section>
+        <q-item-section class="layer-name">{{layerName}}</q-item-section>
+        <q-item-section side>
+            <q-toggle v-model="selected" @input="changeValue"></q-toggle>
+        </q-item-section>
+    </q-item>
+    <q-separator inset="" />
     </div>
 </template>
 
 <script>
     import AxiosWrapper from "../data/AxiosWrapper";
+    import {Vector as VectorSource} from "ol/source";
+    import {Vector as VectorLayer} from "ol/layer";
+    import Point from "ol/geom/Point";
+    import Feature from "ol/Feature";
+    import {transform} from 'ol/proj';
+    import Style from "ol/style/Style";
+    import Icon from "ol/style/Icon";
 
     export default {
         name: "MenuItem",
@@ -18,20 +35,78 @@
         data() {
           return {
               icon: '',
+              layerName: '',
+              selected: false,
+              layer: null,
+              mapLayer: null,
+              loaded: false
           };
         },
         async created() {
             const axios = new AxiosWrapper();
-            let icon = null;
-            await axios.request('http://geo.tatar.ru/api/layers/' + this.$props.guid, 'get', {headers: {'X-App': '51d5e291a5f80482', 'Content-Type': 'application/json'}}).then(function (response) {
-                icon = response.data.styleHash.default[0].iconUrl;
+            let response = null;
+            await axios.getLayer(this.$props.guid).then(function (_response) {
+                response = _response;
             });
-            this.icon = icon;
-            window.console.log(this.icon);
+            this.layer = response;
+            this.icon = response.data.styleHash.default[0].iconUrl;
+            this.layerName = response.data.name;
+        },
+        methods: {
+            changeValue() {
+                //ToDo: сделать отображение и скрытие объектов на карте
+                if (this.selected) {
+                    this.show();
+                } else {
+                    this.hide();
+                }
+            },
+            show() {
+                let self = this;
+                if (!this.loaded) {
+                    const axios = new AxiosWrapper();
+                    let response = null;
+                    axios.getLayerFeatures(this.$props.guid).then(function (_response) {
+                        response = _response;
+                        let features = [];
+                        response.data.forEach(function (feature) {
+                            let newFeature = new Feature({
+                                geometry: new Point(transform(feature.geometry.coordinates, 'EPSG:4326', 'EPSG:3857')),
+                                name: feature.id,
+                                guid: feature.id
+                            });
+                            features.push(
+                                newFeature
+                            );
+                        });
+                        let source = new VectorSource({
+                            features: features
+                        });
+                        let layer = new VectorLayer({source: source});
+                        layer.setStyle(new Style({
+                            image: new Icon({
+                                crossOrigin: 'anonymous',
+                                src: self.icon,
+                                scale: 0.5
+                            })
+                        }));
+                        self.$store.getters.map.addLayer(layer);
+                        self.mapLayer = layer;
+                    });
+                    this.loaded = true;
+                } else {
+                    this.mapLayer.setVisible(true);
+                }
+            },
+            hide() {
+                this.mapLayer.setVisible(false);
+            }
         }
     }
 </script>
 
 <style scoped>
-
+    .layer-name {
+        font-size: 1.2em;
+    }
 </style>

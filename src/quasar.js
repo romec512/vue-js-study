@@ -20,6 +20,8 @@ import {
   QItemSection,
   QItemLabel,
   QInput,
+  QSeparator,
+  QToggle
 } from 'quasar'
 
 Vue.use(Quasar, {
@@ -38,7 +40,9 @@ Vue.use(Quasar, {
     QItem,
     QItemSection,
     QItemLabel,
-    QInput
+    QInput,
+    QSeparator,
+    QToggle
   },
   directives: {
   },

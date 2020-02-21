@@ -31,6 +31,7 @@
                 }),
                 controls: [],
             });
+            this.$store.dispatch('SET_MAP', this.map);
         }
     }
 </script>
