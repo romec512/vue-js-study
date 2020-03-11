@@ -23,6 +23,11 @@
     import {transform} from 'ol/proj';
     import Style from "ol/style/Style";
     import Icon from "ol/style/Icon";
+    import Cluster from "ol/source/Cluster";
+    import CircleStyle from "ol/style/Circle";
+    import Stroke from "ol/style/Stroke";
+    import Fill from "ol/style/Fill";
+    import Text from "ol/style/Text";
 
     export default {
         name: "MenuItem",
@@ -79,17 +84,54 @@
                                 newFeature
                             );
                         });
+
                         let source = new VectorSource({
                             features: features
                         });
-                        let layer = new VectorLayer({source: source});
-                        layer.setStyle(new Style({
-                            image: new Icon({
-                                crossOrigin: 'anonymous',
-                                src: self.icon,
-                                scale: 0.5
-                            })
-                        }));
+                        let cluster = new Cluster({
+                            source: source,
+                            distance: 100
+                        });
+                        let layer = new VectorLayer({
+                            source: cluster,
+                            style: function (feature) {
+                                let size = feature.get('features').length;
+                                if (size > 1) {
+                                    return new Style({
+                                        image: new CircleStyle({
+                                            radius: 10,
+                                            stroke: new Stroke({
+                                                color: '#fff'
+                                            }),
+                                            fill: new Fill({
+                                                color: '#3399CC'
+                                            })
+                                        }),
+                                        text: new Text({
+                                            text: size.toString(),
+                                            fill: new Fill({
+                                                color: '#fff'
+                                            })
+                                        })
+                                    });
+                                } else {
+                                    return new Style({
+                                        image: new Icon({
+                                            crossOrigin: 'anonymous',
+                                            src: self.icon,
+                                            scale: 0.5
+                                        })
+                                    });
+                                }
+                            }
+                        });
+                        // layer.setStyle(new Style({
+                        //     image: new Icon({
+                        //         crossOrigin: 'anonymous',
+                        //         src: self.icon,
+                        //         scale: 0.5
+                        //     })
+                        // }));
                         self.$store.getters.map.addLayer(layer);
                         self.mapLayer = layer;
                     });
