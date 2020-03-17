@@ -103,19 +103,22 @@
                                 if (size > 1) {
                                     return new Style({
                                         image: new CircleStyle({
-                                            radius: 10,
+                                            radius: 15,
                                             stroke: new Stroke({
-                                                color: '#fff'
+                                                color: '#4d19cc',
+                                                width: 3
                                             }),
                                             fill: new Fill({
-                                                color: '#3399CC'
+                                                color: '#fff'
                                             })
                                         }),
                                         text: new Text({
                                             text: size.toString(),
                                             fill: new Fill({
-                                                color: '#fff'
-                                            })
+                                                color: '#4d19cc'
+                                            }),
+                                            font: 'bold 18px  Times New Roman serif',
+                                            offsetY: 2
                                         })
                                     });
                                 } else {
