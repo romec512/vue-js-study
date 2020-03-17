@@ -28,7 +28,10 @@
     import Stroke from "ol/style/Stroke";
     import Fill from "ol/style/Fill";
     import Text from "ol/style/Text";
-
+    import Select from "ol/interaction/Select";
+    import {click} from "ol/events/condition";
+    import {createEmpty} from 'ol/extent'
+    import {extend} from 'ol/extent';
     export default {
         name: "MenuItem",
         props: {
@@ -125,6 +128,21 @@
                                 }
                             }
                         });
+                        let select = new Select({
+                            condition: click
+                        });
+                        select.on('select', function (e) {
+                            if (e.selected[0].values_.features.length > 1) {
+                                // let oldExtent = self.$store.getters.map.getView().calculateExtent();
+                                window.console.log(e.selected[0].values_.features);
+                                let extent = createEmpty();
+                                e.selected[0].values_.features.forEach(function (feature) {
+                                    extend(extent, feature.getGeometry().getExtent());
+                                });
+                                self.$store.getters.map.getView().fit(extent);
+                                self.$store.getters.map.getView().setZoom(self.$store.getters.map.getView().getZoom() + 2);
+                            }
+                        });
                         // layer.setStyle(new Style({
                         //     image: new Icon({
                         //         crossOrigin: 'anonymous',
@@ -133,6 +151,7 @@
                         //     })
                         // }));
                         self.$store.getters.map.addLayer(layer);
+                        self.$store.getters.map.addInteraction(select);
                         self.mapLayer = layer;
                     });
                     this.loaded = true;
