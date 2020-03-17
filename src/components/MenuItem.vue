@@ -32,6 +32,7 @@
     import {click} from "ol/events/condition";
     import {createEmpty} from 'ol/extent'
     import {extend} from 'ol/extent';
+    import {getCenter} from 'ol/extent';
     export default {
         name: "MenuItem",
         props: {
@@ -93,7 +94,7 @@
                         });
                         let cluster = new Cluster({
                             source: source,
-                            distance: 100
+                            distance: 50
                         });
                         let layer = new VectorLayer({
                             source: cluster,
@@ -132,15 +133,20 @@
                             condition: click
                         });
                         select.on('select', function (e) {
-                            if (e.selected[0].values_.features.length > 1) {
-                                // let oldExtent = self.$store.getters.map.getView().calculateExtent();
-                                window.console.log(e.selected[0].values_.features);
+                            if (e.selected.length && e.selected[0].values_.features.length > 1) {
                                 let extent = createEmpty();
                                 e.selected[0].values_.features.forEach(function (feature) {
                                     extend(extent, feature.getGeometry().getExtent());
                                 });
-                                self.$store.getters.map.getView().fit(extent);
-                                self.$store.getters.map.getView().setZoom(self.$store.getters.map.getView().getZoom() + 2);
+                                let resolution = self.$store.getters.map.getView().getResolutionForExtent(extent);
+                                let zoom = self.$store.getters.map.getView().getZoomForResolution(resolution);
+                                self.$store.getters.map.getView().animate({
+                                    center: getCenter(extent),
+                                    duration: 500
+                                }, {
+                                    zoom: zoom - 2,
+                                    duration: 500
+                                });
                             }
                         });
                         // layer.setStyle(new Style({
