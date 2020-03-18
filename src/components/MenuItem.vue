@@ -63,7 +63,7 @@
         },
         methods: {
             changeValue() {
-                //ToDo: сделать отображение и скрытие объектов на карте
+
                 if (this.selected) {
                     this.show();
                 } else {
@@ -166,13 +166,7 @@
                                 });
                             }
                         });
-                        // layer.setStyle(new Style({
-                        //     image: new Icon({
-                        //         crossOrigin: 'anonymous',
-                        //         src: self.icon,
-                        //         scale: 0.5
-                        //     })
-                        // }));
+
                         self.$store.getters.map.addLayer(layer);
                         self.$store.getters.map.addInteraction(select);
                         self.mapLayer = layer;
