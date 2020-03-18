@@ -132,8 +132,22 @@
                                 }
                             }
                         });
+
+                        let selectedIcon = self.icon;
+                        selectedIcon = selectedIcon.split(',');
+                        selectedIcon[1] = 'ff6d00';
+                        selectedIcon[3] = 'ff6d00';
+                        selectedIcon = selectedIcon.join(',');
+
                         let select = new Select({
-                            condition: click
+                            condition: click,
+                            style: new Style({
+                                image: new Icon({
+                                    crossOrigin: 'anonymous',
+                                    src: selectedIcon,
+                                    scale: 0.6
+                                })
+                            })
                         });
                         select.on('select', function (e) {
                             if (e.selected.length && e.selected[0].values_.features.length > 1) {
