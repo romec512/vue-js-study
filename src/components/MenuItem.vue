@@ -164,6 +164,9 @@
                                     zoom: zoom - 2,
                                     duration: 500
                                 });
+                            } else if(e.selected.length) {
+                                //ToDo: сделать запрос
+                                self.$store.dispatch('SET_OBJECT', 123);
                             }
                         });
 

@@ -4,11 +4,15 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state: {
-        map: null
+        map: null,
+        object: null
     },
     actions: {
         SET_MAP: (injectee, payload) => {
             injectee.commit('SET_MAP', payload);
+        },
+        SET_OBJECT: (injectee, payload) => {
+            window.console.log(payload);
         }
     },
     getters: {

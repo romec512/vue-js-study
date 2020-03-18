@@ -17,6 +17,7 @@
             <LayersList></LayersList>
         </CollapsibleList>
     </div>
+
 </template>
 
 <script>
@@ -28,6 +29,7 @@
         data() {
             return {
                 search: '',
+                objectId: this.$store.objectId
             }
         },
         methods: {
