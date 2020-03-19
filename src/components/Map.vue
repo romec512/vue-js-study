@@ -76,12 +76,12 @@
                         duration: 500
                     });
                 } else if(e.selected.length) {
-                    window.console.log('click');
-                    // let guid = e.selected[0].values_.features[0].values_.guid;
-                    // self.$store.dispatch('SET_OBJECT', {
-                    //     layerGuid: self.$props.guid,
-                    //     objectGuid: guid
-                    // });
+                    let guid = e.selected[0].values_.features[0].values_.guid;
+                    let layerGuid = e.selected[0].values_.features[0].values_.layerGuid;
+                    self.$store.dispatch('SET_OBJECT', {
+                        layerGuid: layerGuid,
+                        objectGuid: guid
+                    });
                 }
             });
 

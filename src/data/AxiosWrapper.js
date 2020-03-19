@@ -21,4 +21,8 @@ export default class AxiosWrapper {
     getLayerFeatures (guid) {
         return this.request('/api/layers/' + guid + '/features', 'get', this.getHeaders());
     }
+
+    getObject (options) {
+        return this.request('/api/layers/'+ options.layerGuid + '/features/' + options.objectGuid, 'get', this.getHeaders());
+    }
 }
