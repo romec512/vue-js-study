@@ -28,11 +28,6 @@
     import Stroke from "ol/style/Stroke";
     import Fill from "ol/style/Fill";
     import Text from "ol/style/Text";
-    import Select from "ol/interaction/Select";
-    import {click} from "ol/events/condition";
-    import {createEmpty} from 'ol/extent'
-    import {extend} from 'ol/extent';
-    import {getCenter} from 'ol/extent';
     export default {
         name: "MenuItem",
         props: {
@@ -60,6 +55,8 @@
             this.layer = response;
             this.icon = response.data.styleHash.default[0].iconUrl;
             this.layerName = response.data.name;
+            this.layer.data.icon = this.icon;
+            this.$store.dispatch('ADD_LAYER', this.layer.data);
         },
         methods: {
             changeValue() {
@@ -82,7 +79,8 @@
                             let newFeature = new Feature({
                                 geometry: new Point(transform(feature.geometry.coordinates, 'EPSG:4326', 'EPSG:3857')),
                                 name: feature.id,
-                                guid: feature.id
+                                guid: feature.id,
+                                layerGuid: self.$props.guid
                             });
                             features.push(
                                 newFeature
@@ -133,45 +131,7 @@
                             }
                         });
 
-                        let selectedIcon = self.icon;
-                        selectedIcon = selectedIcon.split(',');
-                        selectedIcon[1] = 'ff6d00';
-                        selectedIcon[3] = 'ff6d00';
-                        selectedIcon = selectedIcon.join(',');
-
-                        let select = new Select({
-                            condition: click,
-                            style: new Style({
-                                image: new Icon({
-                                    crossOrigin: 'anonymous',
-                                    src: selectedIcon,
-                                    scale: 0.6
-                                })
-                            })
-                        });
-                        select.on('select', function (e) {
-                            if (e.selected.length && e.selected[0].values_.features.length > 1) {
-                                let extent = createEmpty();
-                                e.selected[0].values_.features.forEach(function (feature) {
-                                    extend(extent, feature.getGeometry().getExtent());
-                                });
-                                let resolution = self.$store.getters.map.getView().getResolutionForExtent(extent);
-                                let zoom = self.$store.getters.map.getView().getZoomForResolution(resolution);
-                                self.$store.getters.map.getView().animate({
-                                    center: getCenter(extent),
-                                    duration: 500
-                                }, {
-                                    zoom: zoom - 2,
-                                    duration: 500
-                                });
-                            } else if(e.selected.length) {
-                                //ToDo: сделать запрос
-                                self.$store.dispatch('SET_OBJECT', 123);
-                            }
-                        });
-
                         self.$store.getters.map.addLayer(layer);
-                        self.$store.getters.map.addInteraction(select);
                         self.mapLayer = layer;
                     });
                     this.loaded = true;

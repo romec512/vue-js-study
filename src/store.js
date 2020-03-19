@@ -1,28 +1,50 @@
 import Vuex from 'vuex'
 import Vue from "vue";
+import AxiosWrapper from "./data/AxiosWrapper";
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state: {
         map: null,
-        object: null
+        object: null,
+        layers: []
     },
     actions: {
         SET_MAP: (injectee, payload) => {
             injectee.commit('SET_MAP', payload);
         },
-        SET_OBJECT: (injectee, payload) => {
-            window.console.log(payload);
+        SET_OBJECT: async (injectee, payload) => {
+            let data = null;
+            await new AxiosWrapper().getObject(payload).then(function (response) {
+                data = response.data;
+            });
+            injectee.commit('SET_OBJECT', data);
+        },
+        ADD_LAYER: (injectee, payload) => {
+            injectee.commit('ADD_LAYER', payload);
         }
     },
     getters: {
         map: state => {
             return state.map;
+        },
+        object: state => {
+            return state.object;
+        },
+        layer: state => guid => {
+            window.console.log(state.layers);
+            return state.layers[guid];
         }
     },
     mutations: {
         SET_MAP: (state, payload) => {
             state.map = payload;
+        },
+        SET_OBJECT: (state, payload) => {
+            state.object = payload;
+        },
+        ADD_LAYER: (state, payload) => {
+            state.layers[payload.id] = payload;
         }
     }
 });
