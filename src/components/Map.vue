@@ -62,6 +62,7 @@
             let self = this;
             select.on('select', function (e) {
                 if (e.selected.length && e.selected[0].values_.features.length > 1) {
+                    self.$store.dispatch('UNSET_OBJECT');
                     let extent = createEmpty();
                     e.selected[0].values_.features.forEach(function (feature) {
                         extend(extent, feature.getGeometry().getExtent());

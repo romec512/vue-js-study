@@ -20,6 +20,9 @@ export const store = new Vuex.Store({
             });
             injectee.commit('SET_OBJECT', data);
         },
+        UNSET_OBJECT: (injectee) => {
+            injectee.commit('UNSET_OBJECT');
+        },
         ADD_LAYER: (injectee, payload) => {
             injectee.commit('ADD_LAYER', payload);
         }
@@ -32,7 +35,6 @@ export const store = new Vuex.Store({
             return state.object;
         },
         layer: state => guid => {
-            window.console.log(state.layers);
             return state.layers[guid];
         }
     },
@@ -42,6 +44,9 @@ export const store = new Vuex.Store({
         },
         SET_OBJECT: (state, payload) => {
             state.object = payload;
+        },
+        UNSET_OBJECT: state => {
+            state.object = null;
         },
         ADD_LAYER: (state, payload) => {
             state.layers[payload.id] = payload;
