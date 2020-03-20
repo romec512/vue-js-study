@@ -1,7 +1,7 @@
 <template>
     <div id="collapsible-list">
         <transition name="slide">
-            <div v-if="isVisible">
+            <div v-show="isVisible">
                 <slot></slot>
             </div>
         </transition>
