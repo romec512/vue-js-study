@@ -1,5 +1,8 @@
 <template>
     <div id="map-menu">
+        <div v-show="object" class="card">
+            <h1>карточка объекта</h1>
+        </div>
         <div id="header">
             <q-input
                     v-model="search"
@@ -29,8 +32,12 @@
         data() {
             return {
                 search: '',
-                objectId: this.$store.objectId
             }
+        },
+        computed: {
+          object: function () {
+            return this.$store.getters.object;
+          }
         },
         methods: {
             onChange() {
@@ -43,15 +50,25 @@
 <style scoped>
     #map-menu {
         position: absolute;
-        background: #ffffff;
+        background: #e4ecfa;
         z-index: 1;
         width: 30%;
         margin-top: 5px;
         margin-left: 5px;
         border-radius: 3px;
+        border: 1px solid #efefef
     }
     #header {
         margin-left: 20px;
         margin-right: 15px;
+    }
+    .card {
+        position: absolute;
+        z-index: 2;
+        width: 100%;
+        margin-left: 15px;
+        border-radius: 3px;
+        background-color: white;
+        border: 1px solid #efefef
     }
 </style>
