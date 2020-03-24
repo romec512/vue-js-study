@@ -16,6 +16,9 @@
                 </template>
             </q-input>
         </div>
+        <div class="line">
+            &nbsp;
+        </div>
         <CollapsibleList>
             <LayersList></LayersList>
         </CollapsibleList>
@@ -50,13 +53,14 @@
 <style scoped>
     #map-menu {
         position: absolute;
-        background: #e4ecfa;
+        background: #ffffff;
         z-index: 1;
         width: 30%;
         margin-top: 5px;
         margin-left: 5px;
         border-radius: 3px;
-        border: 1px solid #efefef
+        border: 1px solid #efefef;
+        box-shadow: 4px 3px 10px 0 rgba(0,0,0,0.5);
     }
     #header {
         margin-left: 20px;
@@ -70,5 +74,9 @@
         border-radius: 3px;
         background-color: white;
         border: 1px solid #efefef
+    }
+    .line {
+        background-color: rgba(0, 0, 0, 0.12);
+        height: 1px;
     }
 </style>
