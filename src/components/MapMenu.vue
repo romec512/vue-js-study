@@ -1,8 +1,6 @@
 <template>
     <div id="map-menu">
-        <div v-show="object" class="card">
-            <h1>карточка объекта</h1>
-        </div>
+        <card v-if="object" :obj="object"></card>
         <div id="header">
             <q-input
                     v-model="search"
@@ -29,18 +27,20 @@
 <script>
     import CollapsibleList from "./CollapsibleList";
     import LayersList from "./LayersList";
+    import Card from "./Card";
+
     export default {
         name: "MapMenu",
-        components: {LayersList, CollapsibleList},
+        components: {Card, LayersList, CollapsibleList},
         data() {
             return {
                 search: '',
             }
         },
         computed: {
-          object: function () {
-            return this.$store.getters.object;
-          }
+            object: function () {
+                return this.$store.getters.object;
+            }
         },
         methods: {
             onChange() {
@@ -60,21 +60,14 @@
         margin-left: 5px;
         border-radius: 3px;
         border: 1px solid #efefef;
-        box-shadow: 4px 3px 10px 0 rgba(0,0,0,0.5);
+        box-shadow: 4px 3px 10px 0 rgba(0, 0, 0, 0.5);
     }
+
     #header {
         margin-left: 20px;
         margin-right: 15px;
     }
-    .card {
-        position: absolute;
-        z-index: 2;
-        width: 100%;
-        margin-left: 15px;
-        border-radius: 3px;
-        background-color: white;
-        border: 1px solid #efefef
-    }
+
     .line {
         background-color: rgba(0, 0, 0, 0.12);
         height: 1px;
