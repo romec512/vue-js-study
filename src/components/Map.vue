@@ -90,6 +90,7 @@
 
             this.map.addInteraction(select);
             this.$store.dispatch('SET_MAP', this.map);
+            this.$store.dispatch('SET_SELECT', select);
         }
     }
 </script>
