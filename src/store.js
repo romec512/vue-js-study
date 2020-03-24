@@ -7,7 +7,8 @@ export const store = new Vuex.Store({
     state: {
         map: null,
         object: null,
-        layers: []
+        layers: [],
+        select: null
     },
     actions: {
         SET_MAP: (injectee, payload) => {
@@ -25,6 +26,9 @@ export const store = new Vuex.Store({
         },
         ADD_LAYER: (injectee, payload) => {
             injectee.commit('ADD_LAYER', payload);
+        },
+        SET_SELECT: (injectee, payload) => {
+            injectee.commit('SET_SELECT', payload);
         }
     },
     getters: {
@@ -36,6 +40,9 @@ export const store = new Vuex.Store({
         },
         layer: state => guid => {
             return state.layers[guid];
+        },
+        select: state => {
+            return state.select;
         }
     },
     mutations: {
@@ -50,6 +57,9 @@ export const store = new Vuex.Store({
         },
         ADD_LAYER: (state, payload) => {
             state.layers[payload.id] = payload;
+        },
+        SET_SELECT: (state, payload) => {
+            state.select = payload;
         }
     }
 });
