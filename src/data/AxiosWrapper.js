@@ -1,7 +1,8 @@
 import axios from 'axios'
+import config from '../config/config';
 export default class AxiosWrapper {
     _apiKey = '51d5e291a5f80482';
-    baseUrl = 'https://geo.tatar.ru';
+    baseUrl = config.baseUrl;
     request (url, method, options) {
         if (method === 'get') {
             return axios.get(this.baseUrl + url, options);
