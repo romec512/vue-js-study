@@ -2,11 +2,11 @@
     <div class="card">
         <div @click="close" class="close-button">Закрыть <q-icon name="close"></q-icon></div>
         <div class="attributes">
-            <div class="name">
-                {{obj.fields[0].value}}
+            <div class="name" v-if="name">
+                {{name}}
             </div>
-            <div>
-                {{obj.fields[1].value}}
+            <div v-if="address">
+                {{address}}
             </div>
             <!-- ToDo: обусловились на том, что сначала смотрим на внешнее имя атрибута, если их нет,
                 то отрисовываем по порядку. Изображения ищем проходом по массиву.
@@ -17,6 +17,7 @@
 </template>
 
 <script>
+    import config from '../config/config';
     export default {
         name: "Card",
         props: {
@@ -30,6 +31,32 @@
                 this.$store.getters.select.getFeatures().clear();
                 this.$store.dispatch('UNSET_OBJECT');
             }
+        },
+        data() {
+            return {
+                name: null,
+                address: null,
+                photos: []
+            };
+        },
+        mounted: function () {
+            let self = this;
+            this.$props.obj.fields.forEach(function (item) {
+                if (item.options.extname) {
+                    switch(item.options.extname)
+                    {
+                        case 'name': self.name = item.rawValue; break;
+                        case 'address': self.address = item.rawValue; break;
+                    }
+                }
+                if (item.datatype === 'file') {
+                    item.rawValue.forEach(function (rawValue) {
+                        if (rawValue.mime.match(/^image.+/)) {
+                            self.photos.push(config.baseUrl + '/uploads/storage/' + rawValue.mainpath);
+                        }
+                    })
+                }
+            });
         }
     }
 </script>
